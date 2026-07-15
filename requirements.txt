@@ -1,0 +1,10 @@
+gradio
+torch
+torchvision
+transformers
+facenet-pytorch
+opencv-python
+numpy
+pandas
+pillow
+matplotlib

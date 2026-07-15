@@ -14,16 +14,33 @@ MODEL_PATH = BASE_DIR / "models" / "dinov2_phase2_best_2500.pt"
 NUM_FRAMES = 15
 THRESHOLD = 0.65
 FACE_MARGIN = 20
+def initialize_models():
+    global processor, model, mtcnn
+
+    if processor is None:
+        print("Loading processor...")
+        processor = AutoImageProcessor.from_pretrained(MODEL_NAME)
+
+    if model is None:
+        print("Loading DINOv2...")
+        model, _ = load_model(
+            str(MODEL_PATH),
+            device=device,
+            model_name=MODEL_NAME
+        )
+
+    if mtcnn is None:
+        print("Loading MTCNN...")
+        mtcnn = MTCNN(
+            keep_all=False,
+            device=device,
+            min_face_size=40
+        )
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-processor = AutoImageProcessor.from_pretrained(MODEL_NAME)
-model, device = load_model(str(MODEL_PATH), device=device, model_name=MODEL_NAME)
-
-mtcnn = MTCNN(
-    keep_all=False,
-    device=device,
-    min_face_size=40
-)
+processor = None
+model = None
+mtcnn = None
 
 
 def sample_frames(video_path: str, num_frames: int = NUM_FRAMES):
@@ -84,6 +101,7 @@ def crop_face(rgb_frame: np.ndarray, margin: int = FACE_MARGIN):
 
 @torch.no_grad()
 def predict_video(video_path: str, num_frames: int = NUM_FRAMES, threshold: float = THRESHOLD, top_k: int = 3):
+    initialize_models()
     frames = sample_frames(video_path, num_frames=num_frames)
     if not frames:
         raise ValueError("No frames could be sampled from the uploaded video.")

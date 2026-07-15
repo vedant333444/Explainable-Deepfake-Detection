@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "models" / "dinov2_phase2_best_2500.pt"
 
 NUM_FRAMES = 15
-THRESHOLD = 0.50
+THRESHOLD = 0.65
 FACE_MARGIN = 20
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

@@ -1,3 +1,13 @@
+---
+title: Explainable Deepfake Detection
+emoji: 🕵️
+colorFrom: indigo
+colorTo: purple
+sdk: gradio
+sdk_version: 4.x.x
+app_file: app.py
+pinned: false
+---
 # 🔍 Explainable Deepfake Detection using Fine-Tuned DINOv2
 
 <p align="center">
